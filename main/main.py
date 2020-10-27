@@ -14,8 +14,8 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
     
-    parser.add_argument('--data-root', default='/data/unagi0/matsuura/PACS/spilit/')
-    parser.add_argument('--save-root', default='/data/unagi0/matsuura/result/dg_mmld')
+    parser.add_argument('--data-root', default='~/pacs_dataset/Raw images/kfold/')
+    parser.add_argument('--save-root', default='/data/unagi0/matsuura/result/dg_mmld/')
     parser.add_argument('--result-dir', default='default')
     parser.add_argument('--train', default='deepall')
     parser.add_argument('--data', default='PACS')
@@ -54,6 +54,7 @@ if __name__ == '__main__':
     parser.add_argument('--instance-stat', action='store_true')
     parser.add_argument('--feature-fixed', action='store_true')
     args = parser.parse_args()
+    data_root = os.path.expanduser(args.data_root)
     
     path = args.save_root + args.result_dir
     if not os.path.isdir(path):
@@ -70,7 +71,7 @@ if __name__ == '__main__':
     get_domain_label, get_cluster = train_to_get_label(args.train, args.clustering)
 
     source_train, source_val, target_test = random_split_dataloader(
-        data=args.data, data_root=args.data_root, source_domain=source_domain, target_domain=target_domain,
+        data=args.data, data_root=data_root, source_domain=source_domain, target_domain=target_domain,
         batch_size=args.batch_size, get_domain_label=get_domain_label, get_cluster=get_cluster, num_workers=4,
         color_jitter=args.color_jitter, min_scale=args.min_scale)
         
